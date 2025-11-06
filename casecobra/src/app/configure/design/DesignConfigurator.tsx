@@ -18,7 +18,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Check, ChevronsUpDown } from "lucide-react";
 import { BASE_PRICE } from "@/config/products";
-import { promise } from "zod";
 import { useUploadThing } from "@/lib/uploadthing";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
@@ -211,11 +210,11 @@ const DesignConfigurator = ({
                       <Radio
                         key={color.label}
                         value={color}
-                        className={({ active, checked }) =>
+                        className={({ checked }) =>
                           cn(
                             "relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 active:ring-0 focus:ring-0 active:outline-none focus:outline-none border-2 border-transparent",
                             {
-                              [`border-${color.tw}`]: active || checked,
+                              [`border-${color.tw}`]: checked,
                             }
                           )
                         }
@@ -267,7 +266,7 @@ const DesignConfigurator = ({
                         <Radio
                           value={option}
                           key={option.value}
-                          className={({ active, checked }) => cn("relative block cursor-pointer rounded-lg bg-white px-6 py-4 shadow-sm border-2 border-zinc-200 focus:outline-none sm:flex sm:justify-between mt-5", { "border-primary": active || checked, })}
+                          className={({ checked }) => cn("relative block cursor-pointer rounded-lg bg-white px-6 py-4 shadow-sm border-2 border-zinc-200 focus:outline-none sm:flex sm:justify-between mt-5", { "border-primary": checked, })}
                         >
                           <span className="flex items-center">
                             <span className="flex flex-col text-sm">

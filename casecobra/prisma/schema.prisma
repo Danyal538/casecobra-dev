@@ -7,8 +7,6 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-<<<<<<< Updated upstream
-=======
 
 enum OrderStatus {
   fulfilled
@@ -102,4 +100,3 @@ model BillingAddress {
   phoneNumber String?
   orders      Order[]
 }
->>>>>>> Stashed changes
