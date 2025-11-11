@@ -1,29 +1,29 @@
-import { clsx, type ClassValue } from "clsx"
-import { Metadata } from "next"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from "clsx";
+import { Metadata } from "next";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
 export const formatPrice = (price: number) => {
   const fomatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
-  })
+  });
   return fomatter.format(price);
-}
+};
 
 export function constructMetaData({
-  title= "Casecobra - custom high-quality phone cases",
-  description="Create custom high-quality phone cases in seconds",
-  image="/thumbnail.png",
-  icons="/favicon.io",
+  title = "Casecobra - custom high-quality phone cases",
+  description = "Create custom high-quality phone cases in seconds",
+  image = "/thumbnail.png",
+  icons = "/favicon.io",
 }: {
-  title?: string,
-  description?: string,
-  image?: string,
-  icons?:string,
+  title?: string;
+  description?: string;
+  image?: string;
+  icons?: string;
 } = {}): Metadata {
   return {
     title,
@@ -31,7 +31,7 @@ export function constructMetaData({
     openGraph: {
       title,
       description,
-      images: [{url: image}]
+      images: [{ url: image }],
     },
     twitter: {
       card: "summary_large_image",
@@ -40,5 +40,6 @@ export function constructMetaData({
       images: [image],
     },
     icons,
-  }
+    metadataBase: new URL("https://casecobra-dev-phi.vercel.app/"),
+  };
 }
