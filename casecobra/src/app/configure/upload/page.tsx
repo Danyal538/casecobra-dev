@@ -20,6 +20,12 @@ const Page = () => {
             console.log("Upload complete data:", data);
             const configId = data?.serverData?.configId;
 
+            if (!configId) {
+                toast.error("Failed to get configuration ID");
+                return;
+            }
+
+
             startTransition(() => {
                 router.push(`/configure/design?id=${configId}`);
             });

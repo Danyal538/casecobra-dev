@@ -11,14 +11,53 @@ export const ourFileRouter = {
     .middleware(async ({ input }) => {
       return { input };
     })
+    // .onUploadComplete(async ({ metadata, file }) => {
+    //   const { configId } = metadata.input;
+
+    //   const res = await fetch(file.ufsUrl);
+    //   const buffer = await res.arrayBuffer();
+
+    //   const imgMetadata = await sharp(buffer).metadata();
+    //   const { width, height } = imgMetadata;
+
+    //   if (!configId) {
+    //     const configuration = await db.configuration.create({
+    //       data: {
+    //         imageUrl: file.ufsUrl,
+    //         height: height || 500,
+    //         width: width || 500,
+    //       },
+    //     });
+
+    //     return { configId: configuration.id };
+    //   } else {
+    //     const updatedConfiguration = await db.configuration.update({
+    //       where: {
+    //         id: configId,
+    //       },
+    //       data: {
+    //         croppedImageUrl: file.ufsUrl,
+    //       },
+    //     });
+
+    //     return { configId: updatedConfiguration.id };
+    //   }
+    // }),
+
     .onUploadComplete(async ({ metadata, file }) => {
       const { configId } = metadata.input;
+      console.log("🟡 UploadThing onUploadComplete called with:", {
+        configId,
+        file,
+      });
 
       const res = await fetch(file.ufsUrl);
       const buffer = await res.arrayBuffer();
 
       const imgMetadata = await sharp(buffer).metadata();
       const { width, height } = imgMetadata;
+
+      console.log("📏 Image metadata:", { width, height });
 
       if (!configId) {
         const configuration = await db.configuration.create({
@@ -28,19 +67,16 @@ export const ourFileRouter = {
             width: width || 500,
           },
         });
-
-        return { configId: configuration.id };
+        console.log("✅ New config created:", configuration.id);
+        return { configId: configuration.id.toString() };
       } else {
+        console.log("✏️ Updating existing config:", configId);
         const updatedConfiguration = await db.configuration.update({
-          where: {
-            id: configId,
-          },
-          data: {
-            croppedImageUrl: file.url,
-          },
+          where: { id: configId },
+          data: { croppedImageUrl: file.ufsUrl },
         });
-
-        return { configId: updatedConfiguration.id };
+        console.log("✅ Updated config:", updatedConfiguration.id);
+        return { configId: updatedConfiguration.id.toString() };
       }
     }),
 } satisfies FileRouter;

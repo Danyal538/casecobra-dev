@@ -28,7 +28,7 @@ const Navbar = async () => {
                                 {isAdmin ? (
                                     <Link
                                         className={buttonVariants({ size: "sm", variant: "ghost" })}
-                                        href="/api/auth/logout"
+                                        href="/dashboard"
                                     >
                                         Dashboard ✨
                                     </Link>
