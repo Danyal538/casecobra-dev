@@ -11,7 +11,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function POST(req: Request) {
   try {
     const body = await req.text();
-    const headersList = await headers(); 
+    const headersList = await headers();
     const signature = headersList.get("stripe-signature");
 
     if (!signature) {
@@ -84,7 +84,7 @@ export async function POST(req: Request) {
           react: OrderReceivedEmail({
             orderId,
             orderDate: updatedOrder.createdAt.toLocaleDateString(),
-            // @ts-ignore
+            //@ts-expect-error description:That ts-error is expected
             shippingAddress: {
               name: session.customer_details!.name!,
               city: shippingAddress!.city!,
