@@ -18,10 +18,10 @@ const OrderReceivedEmail = ({ shippingAddress, orderId, orderDate }: { shippingA
                             Thank you for your order
                         </Heading>
                         <Text style={global.text}>
-                            We're preparing everything for delivery and will notify you once your package has been shipped. Delivery usually takes 2 working days.
+                            We&apos;re preparing everything for delivery and will notify you once your package has been shipped. Delivery usually takes 2 working days.
                         </Text>
                         <Text style={{ ...global.text, marginTop: 24 }}>
-                            If you have any questions regarding your order, please feel free to contact us with your order number and we're here to help you.
+                            If you have any questions regarding your order, please feel free to contact us with your order number and we&apos;re here to help you.
                         </Text>
                     </Section>
                     <Hr style={global.hr} />
@@ -50,7 +50,7 @@ const OrderReceivedEmail = ({ shippingAddress, orderId, orderDate }: { shippingA
                     <Section style={paddingY}>
                         <Row>
                             <Text style={{ ...footer.text, paddingTop: 30, paddingBottom: 30 }}>
-                                Please contact us if you have any questions. (If you reply to this email, we won't be able to see it.)
+                                Please contact us if you have any questions. (If you reply to this email, we won&apos;t be able to see it.)
                             </Text>
                         </Row>
                         <Row>
