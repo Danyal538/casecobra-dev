@@ -11,7 +11,8 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function POST(req: Request) {
   try {
     const body = await req.text();
-    const signature = headers().get("stripe-signature");
+    const headersList = await headers(); 
+    const signature = headersList.get("stripe-signature");
 
     if (!signature) {
       return new Response("Invalid signature", { status: 400 });
@@ -75,24 +76,29 @@ export async function POST(req: Request) {
         },
       });
 
-      await resend.emails.send({
-        from: "CaseCobra <hello@joshtriedcoding.com>",
-        to: [event.data.object.customer_details.email],
-        subject: "Thanks for your order!",
-        react: OrderReceivedEmail({
-          orderId,
-          orderDate: updatedOrder.createdAt.toLocaleDateString(),
-          // @ts-ignore
-          shippingAddress: {
-            name: session.customer_details!.name!,
-            city: shippingAddress!.city!,
-            country: shippingAddress!.country!,
-            postalCode: shippingAddress!.postal_code!,
-            street: shippingAddress!.line1!,
-            state: shippingAddress!.state,
-          },
-        }),
-      });
+      try {
+        const response = await resend.emails.send({
+          from: "CaseCobra <onboarding@resend.dev>",
+          to: [event.data.object.customer_details.email],
+          subject: "Thanks for your order!",
+          react: OrderReceivedEmail({
+            orderId,
+            orderDate: updatedOrder.createdAt.toLocaleDateString(),
+            // @ts-ignore
+            shippingAddress: {
+              name: session.customer_details!.name!,
+              city: shippingAddress!.city!,
+              country: shippingAddress!.country!,
+              postalCode: shippingAddress!.postal_code!,
+              street: shippingAddress!.line1!,
+              state: shippingAddress!.state,
+            },
+          }),
+        });
+        console.log("Resend success:", response);
+      } catch (error) {
+        console.log("Resend error:", error);
+      }
     }
 
     return NextResponse.json({ result: event, ok: true });
