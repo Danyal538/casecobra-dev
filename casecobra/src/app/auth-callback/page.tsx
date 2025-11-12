@@ -1,8 +1,62 @@
+// 'use client'
+
+// import { useQuery } from '@tanstack/react-query';
+// import React, { useEffect, useState } from 'react';
+// import { useRouter } from "next/navigation"
+// import { Loader2 } from 'lucide-react';
+// import { getAuthStatus } from './actions';
+
+// const Page = () => {
+//     const [configId, setConfigId] = useState<string | null>(null);
+//     const router = useRouter();
+
+//     useEffect(() => {
+//         const configurationId = localStorage.getItem("configurationId");
+//         if (configurationId) setConfigId(configurationId);
+//     }, [])
+
+//     const { data, refetch } = useQuery({
+//         queryKey: ['auth-callback'],
+//         queryFn: (async () => await getAuthStatus()),
+//         retry: true,
+//         retryDelay: 500,
+//     })
+
+//     useEffect(() => {
+//         const timer = setTimeout(() => {
+//             refetch();
+//         }, 1500);
+//         return () => clearTimeout(timer);
+//     }, [refetch]);
+
+
+//     if (data?.success) {
+//         if (configId) {
+//             localStorage.removeItem("configurationId")
+//             router.push(`/configure/preview?id=${configId}`)
+//         }
+//         else {
+//             router.push('/')
+//         }
+//     }
+//     return (
+//         <div className='w-full mt-24 flex justify-center'>
+//             <div className='flex flex-col items-center gap-2'>
+//                 <Loader2 className='h-8 w-8 animate-spin text-zinc-500' />
+//                 <h3 className='font-semibold text-xl'>Logging you in...</h3>
+//                 <p>You will be redirected automatically.</p>
+//             </div>
+//         </div>
+//     )
+// }
+
+// export default Page;
+
 'use client'
 
 import { useQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
-import { useRouter } from "next/navigation"
+import { useRouter } from "next/navigation";
 import { Loader2 } from 'lucide-react';
 import { getAuthStatus } from './actions';
 
@@ -13,41 +67,40 @@ const Page = () => {
     useEffect(() => {
         const configurationId = localStorage.getItem("configurationId");
         if (configurationId) setConfigId(configurationId);
-    }, [])
+    }, []);
 
-    const { data, refetch } = useQuery({
+    const { data, isFetching } = useQuery({
         queryKey: ['auth-callback'],
-        queryFn: (async () => await getAuthStatus()),
-        retry: true,
-        retryDelay: 500,
-    })
+        queryFn: async () => {
+            const res = await getAuthStatus();
+            console.log("Auth status result:", res); // 🔍 check what backend returns
+            return res;
+        },
+        refetchInterval: 1500, // ✅ built-in interval instead of manual setTimeout
+        refetchIntervalInBackground: true,
+    });
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            refetch();
-        }, 1500);
-        return () => clearTimeout(timer);
-    }, [refetch]);
-
-
-    if (data?.success) {
-        if (configId) {
-            localStorage.removeItem("configurationId")
-            router.push(`/configure/preview?id=${configId}`)
+        if (data?.success) {
+            if (configId) {
+                localStorage.removeItem("configurationId");
+                router.push(`/configure/preview?id=${configId}`);
+            } else {
+                router.push('/');
+            }
         }
-        else {
-            router.push('/')
-        }
-    }
+    }, [data, configId, router]);
+
     return (
-        <div className='w-full mt-24 flex justify-center'>
-            <div className='flex flex-col items-center gap-2'>
-                <Loader2 className='h-8 w-8 animate-spin text-zinc-500' />
-                <h3 className='font-semibold text-xl'>Logging you in...</h3>
+        <div className="w-full mt-24 flex justify-center">
+            <div className="flex flex-col items-center gap-2">
+                <Loader2 className="h-8 w-8 animate-spin text-zinc-500" />
+                <h3 className="font-semibold text-xl">Logging you in...</h3>
                 <p>You will be redirected automatically.</p>
+                {isFetching && <p className="text-sm text-gray-400">Checking session...</p>}
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default Page;
