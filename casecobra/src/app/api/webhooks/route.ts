@@ -84,7 +84,7 @@ export async function POST(req: Request) {
           react: OrderReceivedEmail({
             orderId,
             orderDate: updatedOrder.createdAt.toLocaleDateString(),
-            //@ts-expect-error 
+            //@ts-expect-error This error is expected
             shippingAddress: {
               name: session.customer_details!.name!,
               city: shippingAddress!.city!,
