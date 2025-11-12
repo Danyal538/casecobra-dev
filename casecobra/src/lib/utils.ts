@@ -40,6 +40,6 @@ export function constructMetaData({
       images: [image],
     },
     icons,
-    metadataBase: new URL("https://casecobra-dev-phi.vercel.app/"),
+    metadataBase: new URL("https://casecobra-dev-9coe.vercel.app/"),
   };
 }
