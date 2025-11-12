@@ -15,13 +15,20 @@ const Page = () => {
         if (configurationId) setConfigId(configurationId);
     }, [])
 
-    const { data } = useQuery({
+    const { data, refetch } = useQuery({
         queryKey: ['auth-callback'],
         queryFn: (async () => await getAuthStatus()),
         retry: true,
         retryDelay: 500,
-        enabled: false,
     })
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            refetch();
+        }, 1500);
+        return () => clearTimeout(timer);
+    }, [refetch]);
+
 
     if (data?.success) {
         if (configId) {
