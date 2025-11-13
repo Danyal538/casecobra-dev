@@ -33,44 +33,29 @@ const DesingPreview = ({ configuration }: { configuration: configuration }) => {
     if (material === 'polycarbonate') totalPrice += PRODUCT_PRICES.material.polycarbonate;
     if (finish === 'textured') totalPrice += PRODUCT_PRICES.finish.textured;
 
-    // const { mutate: createPaymentSession } = useMutation({
-    //     mutationKey: ["get-checkout-session"],
-    //     mutationFn: createCheckoutSession,
-    //     onSuccess: ({ url }) => {
-    //         if (url) router.push(url);
-    //         else throw new Error('Unable to retrieve payment URL')
-    //     },
-    //     onError: () => {
-    //         toast(
-    //             <div>
-    //                 <p className="font-semibold">Something went wrong</p>
-    //                 <p className="text-sm text-gray-500">There was an error on our end. Please try again.</p>
-    //             </div>
-    //         );
+    const { mutate: createPaymentSession } = useMutation({
+        mutationKey: ["get-checkout-session"],
+        mutationFn: createCheckoutSession,
+        onSuccess: ({ url }) => {
+            if (url) router.push(url);
+            else throw new Error('Unable to retrieve payment URL')
+        },
+        onError: () => {
+            toast(
+                <div>
+                    <p className="font-semibold">Something went wrong</p>
+                    <p className="text-sm text-gray-500">There was an error on our end. Please try again.</p>
+                </div>
+            );
 
-    //     }
-    // })
+        }
+    })
 
-    // const handleCheckout = () => {
-    //     if (user) {
-    //         createPaymentSession({ configId: id })
-    //     }
-    //     else {
-    //         localStorage.setItem("configurationId", id)
-    //         setIsLoginModelOpen(true)
-    //     }
-    // }
-
-    const handleCheckout = async () => {
+    const handleCheckout = () => {
         if (user) {
-            try {
-                const res = await createCheckoutSession({ configId: id })
-                if (res.url) router.push(res.url)
-                else throw new Error("Unable to retrieve payment URL")
-            } catch (err) {
-                toast.error("Something went wrong, please try again.")
-            }
-        } else {
+            createPaymentSession({ configId: id })
+        }
+        else {
             localStorage.setItem("configurationId", id)
             setIsLoginModelOpen(true)
         }
