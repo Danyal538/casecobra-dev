@@ -23,6 +23,7 @@ export const createCheckoutSession = async ({
   if (!user) {
     throw new Error("You need to be logged in");
   }
+  console.log("user in checkout:", user);
 
   const { finish, material } = configuration;
 
