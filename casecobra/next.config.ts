@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+const KINDE_DEFAULT_URL = process.env.KINDE_SITE_URL || 'http://localhost:3000';
+let VERCEL_URL = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : KINDE_DEFAULT_URL;
 const nextConfig = {
   images: {
     remotePatterns: [
@@ -46,13 +48,14 @@ const nextConfig = {
     ];
   },
   env: {
-    // This dynamically sets the SITE_URL based on the Vercel environment variable,
-    // ensuring the protocol and domain are always correct for the current deployment.
-    KINDE_SITE_URL: process.env.KINDE_SITE_URL || `https://${process.env.VERCEL_URL}`,
-    // You should also set the others this way to be safe:
-    KINDE_POST_LOGOUT_REDIRECT_URL: process.env.KINDE_POST_LOGOUT_REDIRECT_URL || `https://${process.env.VERCEL_URL}`,
-    KINDE_POST_LOGIN_REDIRECT_URL: process.env.KINDE_POST_LOGIN_REDIRECT_URL || `https://${process.env.VERCEL_URL}/api/auth/kinde_callback`,
-  },
+    // 1. Prioritize a manually set KINDE_SITE_URL (e.g., in Vercel settings)
+    // 2. Fall back to the dynamic VERCEL_URL if available
+    // 3. Finally, fall back to http://localhost:3000 (which you manually set as KINDE_SITE_URL locally)
+    KINDE_SITE_URL: VERCEL_URL, 
+    KINDE_POST_LOGOUT_REDIRECT_URL: VERCEL_URL,
+    // The redirect URL must include the callback path
+    KINDE_POST_LOGIN_REDIRECT_URL: `${VERCEL_URL}/api/auth/kinde_callback`, 
+  }
 };
 
 export default nextConfig;
