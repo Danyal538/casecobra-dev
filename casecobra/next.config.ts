@@ -45,6 +45,14 @@ const nextConfig = {
       },
     ];
   },
+  env: {
+    // This dynamically sets the SITE_URL based on the Vercel environment variable,
+    // ensuring the protocol and domain are always correct for the current deployment.
+    KINDE_SITE_URL: process.env.KINDE_SITE_URL || `https://${process.env.VERCEL_URL}`,
+    // You should also set the others this way to be safe:
+    KINDE_POST_LOGOUT_REDIRECT_URL: process.env.KINDE_POST_LOGOUT_REDIRECT_URL || `https://${process.env.VERCEL_URL}`,
+    KINDE_POST_LOGIN_REDIRECT_URL: process.env.KINDE_POST_LOGIN_REDIRECT_URL || `https://${process.env.VERCEL_URL}/api/auth/kinde_callback`,
+  },
 };
 
 export default nextConfig;
