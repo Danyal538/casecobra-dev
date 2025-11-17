@@ -50,13 +50,9 @@ const nextConfig = {
     ];
   },
   env: {
-    // 1. Prioritize a manually set KINDE_SITE_URL (e.g., in Vercel settings)
-    // 2. Fall back to the dynamic VERCEL_URL if available
-    // 3. Finally, fall back to http://localhost:3000 (which you manually set as KINDE_SITE_URL locally)
     KINDE_SITE_URL: VERCEL_URL,
     KINDE_POST_LOGOUT_REDIRECT_URL: VERCEL_URL,
-    // The redirect URL must include the callback path
-    KINDE_POST_LOGIN_REDIRECT_URL: `${VERCEL_URL}/api/auth/kinde_callback`,
+    KINDE_POST_LOGIN_REDIRECT_URL: VERCEL_URL,
   },
 };
 
