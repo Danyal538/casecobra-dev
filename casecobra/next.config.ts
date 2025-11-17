@@ -1,9 +1,4 @@
 import type { NextConfig } from "next";
-
-const KINDE_DEFAULT_URL = process.env.KINDE_SITE_URL || "http://localhost:3000";
-const VERCEL_URL = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL.replace(/\/$/, "")}` // NEW: Strips trailing slash
-  : KINDE_DEFAULT_URL;
 const nextConfig = {
   images: {
     remotePatterns: [
@@ -48,11 +43,6 @@ const nextConfig = {
         ],
       },
     ];
-  },
-  env: {
-    KINDE_SITE_URL: VERCEL_URL,
-    KINDE_POST_LOGOUT_REDIRECT_URL: VERCEL_URL,
-    KINDE_POST_LOGIN_REDIRECT_URL: VERCEL_URL,
   },
 };
 
