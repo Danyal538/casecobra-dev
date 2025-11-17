@@ -8,7 +8,12 @@ import { notFound } from "next/navigation";
 import StatusDropdown from "./StatusDropdown";
 
 const Page = async () => {
-    const { getUser } = getKindeServerSession();
+    const { getUser } = getKindeServerSession({
+        cookies: {
+            secure: true,
+            sameSite: "none",
+        }
+    });
     const user = await getUser();
     const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 
