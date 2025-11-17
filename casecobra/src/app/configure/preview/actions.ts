@@ -17,12 +17,7 @@ export const createCheckoutSession = async ({
   if (!configuration) {
     throw new Error("No such configuration found");
   }
-  const { getUser } = getKindeServerSession({
-    cookies: {
-      secure: true,
-      sameSite: "none",
-    },
-  });
+  const { getUser } = getKindeServerSession();
   const user = await getUser();
   console.log("user:", user);
 

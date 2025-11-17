@@ -4,12 +4,7 @@ import { db } from "@/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 export const getAuthStatus = async () => {
-  const { getUser } = getKindeServerSession({
-    cookies: {
-      secure: true,
-      sameSite: "none",
-    },
-  });
+  const { getUser } = getKindeServerSession();
   const user = await getUser();
 
   if (!user?.id || !user.email) {
