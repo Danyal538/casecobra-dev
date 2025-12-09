@@ -13,7 +13,7 @@ const Page = async () => {
     const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 
     if (!user || user.email !== ADMIN_EMAIL) {
-        return notFound();
+        return <h1>Not logged in as admin</h1>;
     }
     const orders = await db.order.findMany({
         where: {
