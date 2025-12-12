@@ -18,9 +18,9 @@ const Page = async () => {
 
     if (!user || user.email !== ADMIN_EMAIL) {
         console.log("4. Access Denied");
-        return <h1>Not logged in as admin</h1>;
+        return <h1 className="mt-30">Not logged in as admin</h1>;
     }
-    
+
     console.log("5. Access Granted. Fetching DB...");
     const orders = await db.order.findMany({
         where: {
