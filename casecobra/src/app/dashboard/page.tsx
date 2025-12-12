@@ -8,13 +8,20 @@ import { notFound } from "next/navigation";
 import StatusDropdown from "./StatusDropdown";
 
 const Page = async () => {
+    console.log("1. Starting Dashboard Render");
     const { getUser } = getKindeServerSession();
     const user = await getUser();
     const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 
+    console.log("2. User Email:", user?.email);
+    console.log("3. Admin Email Env:", ADMIN_EMAIL);
+
     if (!user || user.email !== ADMIN_EMAIL) {
+        console.log("4. Access Denied");
         return <h1>Not logged in as admin</h1>;
     }
+    
+    console.log("5. Access Granted. Fetching DB...");
     const orders = await db.order.findMany({
         where: {
             isPaid: true,
@@ -30,6 +37,7 @@ const Page = async () => {
             shippingAddress: true,
         }
     })
+    console.log("6. Orders Fetched:", orders.length);
 
     const lastWeekSum = await db.order.aggregate({
         where: {
