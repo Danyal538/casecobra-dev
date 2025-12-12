@@ -18,7 +18,10 @@ const Page = async () => {
 
     if (!user || user.email !== ADMIN_EMAIL) {
         console.log("4. Access Denied");
-        return <h1 className="mt-30">Not logged in as admin</h1>;
+        return <h1 className="mt-24 text-center text-2xl font-bold text-red-500">
+            Access Denied: Not logged in as admin. <br />
+            Current User: {user?.email || "No Session Detected"}
+        </h1>;
     }
 
     console.log("5. Access Granted. Fetching DB...");
